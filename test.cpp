@@ -49,7 +49,7 @@ int main ()
 
     L.clear();
     L.display();
-    obj.display();
+    
 
     return 0;
 }

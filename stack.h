@@ -21,6 +21,7 @@ public:
     ~MyStack() { delete [] tab; }
     MyStack(const MyStack& other)
     {
+        tab = new T[other.msize];
         last = other.last;
         msize = other.msize;
         for (int i = 0; i < last; i++)
@@ -31,25 +32,31 @@ public:
     // usage:   ArrayList<int> list2(list1);
     MyStack(MyStack&& other)
     {
-        *this = std::move(other);
+        tab = new T[other.msize];
+        msize = other.msize;
+        last = other.last;
         other.last = 0;
         other.msize = 0;
         for (int i = 0; i < last; i++)
         {
+            tab[i] = other.tab[i];
             other.tab[i] = 0;
         }
+        delete [] other.tab;
     } // move constructor NIEOBOWIAZKOWE
     //
     MyStack& operator=(const MyStack& other)
     {
         if (this != &other)
         {
+            tab = new T [other.msize];
             last = other.last;
             msize = other.msize;
             for (int i = 0; i < last; i++)
             {
                 tab[i] = other.tab[i];
             }
+            delete [] other.tab;
             return *this;
         }
         else
@@ -63,13 +70,17 @@ public:
     {   
         if (this != &other)
         {
-            *this = std::move (other);
+            tab = new T [other.msize];
+            last = other.last;
+            msize = other.msize;
             other.last = 0;
             other.msize = 0;
             for (int i = 0; i < last; i++)
             {
+                tab[i] = other.tab[i];
                 other.tab[i] = 0;
             }
+            delete [] other.tab;
         }
         return *this;
     } // move assignment operator, return *this
