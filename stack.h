@@ -32,31 +32,29 @@ public:
     // usage:   ArrayList<int> list2(list1);
     MyStack(MyStack&& other)
     {
-        tab = new T[other.msize];
+        tab = other.tab;
         msize = other.msize;
         last = other.last;
         other.last = 0;
         other.msize = 0;
-        for (int i = 0; i < last; i++)
-        {
-            tab[i] = other.tab[i];
-            other.tab[i] = 0;
-        }
-        delete [] other.tab;
+        other.tab = nullptr;
     } // move constructor NIEOBOWIAZKOWE
     //
     MyStack& operator=(const MyStack& other)
     {
+        std::cout << "Operator kopiujacy\n";
         if (this != &other)
         {
-            tab = new T [other.msize];
-            last = other.last;
-            msize = other.msize;
+            delete [] this->tab;
+            this->last = 0;
+            this->msize = 0;
+            this->tab = new T [other.msize];
+            this->last = other.last;
+            this->msize = other.msize;
             for (int i = 0; i < last; i++)
             {
                 tab[i] = other.tab[i];
             }
-            delete [] other.tab;
             return *this;
         }
         else
@@ -67,20 +65,19 @@ public:
     } // copy assignment operator, return *this
     // usage:   list2 = list1; NIEOBOWIAZKOWE
     MyStack& operator=(MyStack&& other)
-    {   
+    { 
+        std::cout << "Operator przenoszacy\n";  
         if (this != &other)
         {
-            tab = new T [other.msize];
+            delete [] this->tab;
+            this->last = 0;
+            this->msize = 0;
+            this->tab = other.tab;
             last = other.last;
             msize = other.msize;
             other.last = 0;
             other.msize = 0;
-            for (int i = 0; i < last; i++)
-            {
-                tab[i] = other.tab[i];
-                other.tab[i] = 0;
-            }
-            delete [] other.tab;
+            other.tab = nullptr;
         }
         return *this;
     } // move assignment operator, return *this
